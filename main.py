@@ -8,7 +8,6 @@
 
 import wx
 import wx.html2 as wv       # webview
-import pandas as pd
 from wx._core import StaticText
 
 
@@ -20,21 +19,32 @@ class MainFrame(wx.Frame):
                          style=wx.DEFAULT_FRAME_STYLE | wx.RESIZE_BORDER)
 
         gbf_panel = wx.Panel(self)
-        ## gbf_sizer = wx.BoxSizer(wx.VERTICAL)
+        frame_sizer = wx.BoxSizer(wx.VERTICAL)
+
+
 
         ## build sections for each part of the GUI
         #self._build_menu()
-        #fgbs_gird = self._buld_fgbs_grid()
+        fgbs_grid = self._build_fbgs_grid(gbf_panel)
         #bottom_buttons = self._build_button(panel)
 
 
+        frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
+        frame_sizer.SetSizeHints(self)
+        self.SetSizer(frame_sizer)
+
+        self.Centre()
+        self.Show()
 
 
-
-
-
-    ########################
+    #-----------------------------------------------------------------------------------------------
     ##### gridbagsizer #####
+    #-----------------------------------------------------------------------------------------------
+    """
+    TODO: add the code for the user selections
+    All I have now is just the layout
+    """
+    def _build_fbgs_grid(self, gbf_panel):
         fgbs = wx.GridBagSizer(2, 2)
 
         # table header
@@ -163,13 +173,15 @@ class MainFrame(wx.Frame):
 
         gbf_panel.SetSizer(fgbs)
 
-    #######################
-    ##### menu system #####
-        frame_sizer = wx.BoxSizer(wx.VERTICAL)
-        frame_sizer.Add(gbf_panel, 0, flag=wx.EXPAND | wx.ALL, border=5)
-        frame_sizer.SetSizeHints(self)
-        self.SetSizer(frame_sizer)
+        return gbf_panel
 
+    #-----------------------------------------------------------------------------------------------
+    # MENU BAR
+    #-----------------------------------------------------------------------------------------------
+    def _build_mmenu(self):
+        pass
+
+     #return menu_bar
 
 def outprint():
     print(f"Hello; wxPython version!, {wx.__version__}")
