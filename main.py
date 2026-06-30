@@ -3,6 +3,8 @@
 # from source material listed in code files
 # initial commit - 06/22,2026
 
+# now the main backup before refactoring
+
 
 import wx
 import wx.html2 as wv       # webview
@@ -25,7 +27,7 @@ class MainFrame(wx.Frame):
         #fgbs_gird = self._buld_fgbs_grid()
         #bottom_buttons = self._build_button(panel)
 
-        
+
 
 
 
