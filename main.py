@@ -26,10 +26,12 @@ class MainFrame(wx.Frame):
         ## build sections for each part of the GUI
         self._build_menu()
         fgbs_grid = self._build_fbgs_grid(gbf_panel)
-        #bottom_buttons = self._build_button(panel)
+        bottom_buttons = self._build_button_row(self)
 
 
         frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
+        frame_sizer.Add(bottom_buttons, 0, flag=wx.EXPAND | wx.ALL, border=5)
+
         frame_sizer.SetSizeHints(self)
         self.SetSizer(frame_sizer)
 
@@ -190,12 +192,15 @@ class MainFrame(wx.Frame):
 
         self.SetMenuBar(menu_bar)
 
+    #-----------------------------------------------------------------------------------------------
+    # bottom button bar
+    #-----------------------------------------------------------------------------------------------
+    def _build_button_row(self, panel):
+        button_row_sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-def outprint():
-    print(f"Hello; wxPython version!, {wx.__version__}")
-    return
-
-outprint()
+        button_row_sizer.Add(wx.Button(panel, label="OK"), 0, wx.RIGHT, 10)
+        button_row_sizer.Add(wx.Button(panel, label="Cancel"), 0)
+        return button_row_sizer
 
 
 if __name__ == "__main__":
