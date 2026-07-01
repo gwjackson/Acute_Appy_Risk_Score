@@ -197,9 +197,27 @@ class MainFrame(wx.Frame):
     #-----------------------------------------------------------------------------------------------
     def _build_button_row(self, panel):
         button_row_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
+        """
         button_row_sizer.Add(wx.Button(panel, label="OK"), 0, wx.RIGHT, 10)
         button_row_sizer.Add(wx.Button(panel, label="Cancel"), 0)
+        """
+        rbox = wx.StaticBox(panel, label="Reports")
+        rbox_sizer = wx.StaticBoxSizer(rbox, wx.VERTICAL)
+
+        rbox_sizer.Add(wx.Button(panel, label="Alvardo"), 0, wx.EXPAND, 0)
+        rbox_sizer.Add(wx.Button(panel, label="Reports"), 0, wx.EXPAND, 0)
+        rbox_sizer.Add(wx.Button(panel, label="Both"), 0, wx.EXPAND, 0)
+        button_row_sizer.Add(rbox_sizer, 1, 5)
+
+        obox = wx.StaticBox(panel, label="Options")
+        obox_sizer = wx.StaticBoxSizer(obox, wx.VERTICAL)
+
+        #obox_sizer = wx.BoxSizer(wx.VERTICAL)
+        obox_sizer.Add(wx.Button(panel, label="Reset"), 0, wx.EXPAND, 0)
+        obox_sizer.Add(0, 25)
+        obox_sizer.Add(wx.Button(panel, label="Exit"), 0, wx.EXPAND, 0)
+        button_row_sizer.Add(obox_sizer, 1, 5)
+
         return button_row_sizer
 
 
