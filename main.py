@@ -8,7 +8,7 @@
 
 import wx
 import wx.html2 as wv       # webview
-from wx._core import StaticText
+
 
 
 class MainFrame(wx.Frame):
@@ -143,7 +143,7 @@ class MainFrame(wx.Frame):
         ripchbxsymsizer.Add(wx.CheckBox(gbf_panel, -1, 'Migration of pain (0.5)', name='ripchbxsymmig'))
         ripchbxsymsizer.Add(wx.CheckBox(gbf_panel, -1, 'Nausea or vomiting (1)', name='ripchbxsymnausea'))
         ripchbxsymsizer.Add(wx.CheckBox(gbf_panel, -1, 'RLQ pain (0.5)', name='ripchbxsymrlq'))
-        ripchbxsymsizer.Add(StaticText(gbf_panel, -1,  'Duration of symptoms:'))
+        ripchbxsymsizer.Add(wx.StaticText(gbf_panel, -1,  'Duration of symptoms:'))
         ripchbxsymsizer.Add(wx.RadioButton(gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbsmdur'))
         ripchbxsymsizer.Add(wx.RadioButton(gbf_panel, -1, "> 48 hours (0.5)", name='riprbsmdur'))
         fgbs.Add(ripchbxsymsizer,(4, 2), flag=idxflags, border=2)
@@ -205,7 +205,7 @@ class MainFrame(wx.Frame):
         rbox_sizer = wx.StaticBoxSizer(rbox, wx.VERTICAL)
 
         rbox_sizer.Add(wx.Button(panel, label="Alvardo"), 0, wx.EXPAND, 0)
-        rbox_sizer.Add(wx.Button(panel, label="Reports"), 0, wx.EXPAND, 0)
+        rbox_sizer.Add(wx.Button(panel, label="RIPASA"), 0, wx.EXPAND, 0)
         rbox_sizer.Add(wx.Button(panel, label="Both"), 0, wx.EXPAND, 0)
         button_row_sizer.Add(rbox_sizer, 1, 5)
 
