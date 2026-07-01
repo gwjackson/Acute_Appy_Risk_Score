@@ -24,7 +24,7 @@ class MainFrame(wx.Frame):
 
 
         ## build sections for each part of the GUI
-        #self._build_menu()
+        self._build_menu()
         fgbs_grid = self._build_fbgs_grid(gbf_panel)
         #bottom_buttons = self._build_button(panel)
 
@@ -178,10 +178,18 @@ class MainFrame(wx.Frame):
     #-----------------------------------------------------------------------------------------------
     # MENU BAR
     #-----------------------------------------------------------------------------------------------
-    def _build_mmenu(self):
-        pass
+    def _build_menu(self):
+        menu_bar = wx.MenuBar()
+        about_menu = wx.Menu()
+        citations_menu = wx.Menu()
+        help_menu = wx.Menu()
 
-     #return menu_bar
+        menu_bar.Append(about_menu, "&About")
+        menu_bar.Append(citations_menu, "&Citations")
+        menu_bar.Append(help_menu, "&Help")
+
+        self.SetMenuBar(menu_bar)
+
 
 def outprint():
     print(f"Hello; wxPython version!, {wx.__version__}")
