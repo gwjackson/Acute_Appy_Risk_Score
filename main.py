@@ -69,7 +69,7 @@ class MainFrame(wx.Frame):
             target = self.gbf_panel.FindWindowByName(target_name)
             target.SetValue(value)
 
-    # still need to add real functionality to these
+    # still need to add real functionality to these will be in a different method, this is just linking
     def on_alvleuk(self, event):
         self.obj_link('alvckbxwbc', event.IsChecked())
 
@@ -112,6 +112,31 @@ class MainFrame(wx.Frame):
     def on_ripnausea(self, event):
         self.obj_link('ripchbxnausea', event.IsChecked())
 
+
+    # the business logic to collect the score values.
+    def on_rb_age(self, event):
+        radio_selected = event.GetEventObject()
+        if ">" in radio_selected.GetLabel():
+            self.rb_age_value = 0.5
+        else:
+            self.rb_age_vale = 1
+        print(f'RB age clicked {radio_selected.GetLabel()} and value is {self.rb_age}')
+
+    def on_rb_sex(self, event):
+        radio_selected = event.GetEventObject()
+        if 'male' in radio_selected.GetLabel():
+            self.rb_sex_value = 1
+        else:
+            self.rb_sex_value = 0.5
+        print(f'RB sex clicked {radio_selected.GetLabel()} and value is {self.rb_sex_value}')
+
+    def on_rb_time(self, event):
+        radio_selected = event.GetEventObject()
+        if ">" in radio_selected.GetLabel():
+            self.rb_time_value = 0.5
+        else:
+            self.rb_time_value = 1
+        print(f'RB duration clicked {radio_selected.GetLabel()} and value is {self.rb_time_value}')
 
 
     def on_exit(self, event):
@@ -218,11 +243,25 @@ class MainFrame(wx.Frame):
         # table third column
 
         riprbsizer = wx.BoxSizer(wx.VERTICAL)
-        riprbsizer.Add(wx.RadioButton(self.gbf_panel, -1, "Age <= 40 (1)", style=wx.RB_GROUP, name='riprbage'))
-        riprbsizer.Add(wx.RadioButton(self.gbf_panel, -1, "Age > 40 (0.5)", name='riprbage'))
+        self.riprble40 = wx.RadioButton(self.gbf_panel, -1, "Age <= 40 (1)", style=wx.RB_GROUP, name='riprble40')
+        riprbsizer.Add(self.riprble40)
+        self.riprble40.Bind(wx.EVT_RADIOBUTTON, self.on_rb_age)
+
+
+        self.riprbgt40 = wx.RadioButton(self.gbf_panel, -1, "Age > 40 (0.5)", name='riprbgt40')
+        riprbsizer.Add(self.riprbgt40)
+        self.riprbgt40.Bind(wx.EVT_RADIOBUTTON, self.on_rb_age)
+
         riprbsizer.Add(wx.StaticText(self.gbf_panel, -1, "- - - "))
-        riprbsizer.Add(wx.RadioButton(self.gbf_panel, -1, "Gender: Female (0.5)", style=wx.RB_GROUP, name='riprbsex'))
-        riprbsizer.Add(wx.RadioButton(self.gbf_panel, -1, "Gender: Male (1)", name='riprbsex'))
+
+        self.riprbfemale = wx.RadioButton(self.gbf_panel, -1, "Gender: Female (0.5)", style=wx.RB_GROUP, name='riprbfemale')
+        riprbsizer.Add(self.riprbfemale )
+        self.riprbfemale.Bind(wx.EVT_RADIOBUTTON, self.on_rb_sex)
+
+        self.riprbmale = wx.RadioButton(self.gbf_panel, -1, "Gender: Male (1)", name='riprbmale')
+        riprbsizer.Add(self.riprbmale)
+        self.riprbmale.Bind(wx.EVT_RADIOBUTTON, self.on_rb_sex)
+
         self.fgbs.Add(riprbsizer,(1, 2), flag=idxflags, border=2)
 
         ripchbxwbcsizer = wx.BoxSizer(wx.VERTICAL)
@@ -274,8 +313,15 @@ class MainFrame(wx.Frame):
 
         ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'RLQ pain (0.5)', name='ripchbxsymrlq'))
         ripchbxsymsizer.Add(wx.StaticText(self.gbf_panel, -1,  'Duration of symptoms:'))
-        ripchbxsymsizer.Add(wx.RadioButton(self.gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbsmdur'))
-        ripchbxsymsizer.Add(wx.RadioButton(self.gbf_panel, -1, "> 48 hours (0.5)", name='riprbsmdur'))
+
+        self.riprblt48 = wx.RadioButton(self.gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbdurlt48')
+        ripchbxsymsizer.Add(self.riprblt48)
+        self.riprblt48.Bind(wx.EVT_RADIOBUTTON, self.on_rb_time)
+
+        self.riprbgt48 = wx.RadioButton(self.gbf_panel, -1, "> 48 hours (0.5)", name='riprbdurgt48')
+        ripchbxsymsizer.Add(self.riprbgt48)
+        self.riprbgt48.Bind(wx.EVT_RADIOBUTTON, self.on_rb_time)
+
         self.fgbs.Add(ripchbxsymsizer,(4, 2), flag=idxflags, border=2)
 
         self.fgbs.Add(one_line_text(self.gbf_panel, ">= 7"),
