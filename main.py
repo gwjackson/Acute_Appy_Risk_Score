@@ -69,6 +69,7 @@ class MainFrame(wx.Frame):
             target = self.gbf_panel.FindWindowByName(target_name)
             target.SetValue(value)
 
+    # still need to add real functionality to these
     def on_alvleuk(self, event):
         self.obj_link('alvckbxwbc', event.IsChecked())
 
@@ -80,6 +81,38 @@ class MainFrame(wx.Frame):
 
     def on_ripfever(self, event):
         self.obj_link('ripchbxfever', event.IsChecked())
+
+    def on_alvrebound(self, event):
+        self.obj_link('alvchbxrebound', event.IsChecked())
+
+    def on_riprebound(self, event):
+        self.obj_link('ripchbxrebound', event.IsChecked())
+
+    def on_alvrlq(self, event):
+        self.obj_link('alvchbxrlq', event.IsChecked())
+
+    def on_riprlq(self, event):
+        self.obj_link('ripchbxrlq', event.IsChecked())
+
+    def on_alvanorexia(self, event):
+        self.obj_link('alvchbxanorexia', event.IsChecked())
+
+    def on_ripanorexia(self, event):
+        self.obj_link('ripchbxanorexia', event.IsChecked())
+
+    def on_alvmig(self, event):
+        self.obj_link('alvchbxmig', event.IsChecked())
+
+    def on_ripmig(self, event):
+        self.obj_link('ripchbxmig', event.IsChecked())
+
+    def on_alvnausea(self, event):
+        self.obj_link('alvchbxnausea', event.IsChecked())
+
+    def on_ripnausea(self, event):
+        self.obj_link('ripchbxnausea', event.IsChecked())
+
+
 
     def on_exit(self, event):
         self.Close()
@@ -148,16 +181,36 @@ class MainFrame(wx.Frame):
         self.obj_links["alvchbxfever"] = "ripchbxfever"
         self.alvfever.Bind(wx.EVT_CHECKBOX, self.on_alvfever)
 
-        alvchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Rebound pain (1)', name='alvchbxrebound'))
 
-        alvchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'RLQ tenderness(2)', name='alvchbxrlq'))
+        self.alvrebound = wx.CheckBox(self.gbf_panel, -1, 'Rebound pain (1)', name='alvchbxrebound')
+        alvchbxsgsizer.Add(self.alvrebound)
+        self.obj_links["alvchbxrebound"] = "ripchbxrebound"
+        self.alvrebound.Bind(wx.EVT_CHECKBOX, self.on_alvrebound)
+
+        self.alvrlq = wx.CheckBox(self.gbf_panel, -1, 'RLQ tenderness(2)', name='alvchbxrlq')
+        alvchbxsgsizer.Add(self.alvrlq)
+        self.obj_links["alvchbxrlq"] = "ripchbxrlq"
+        self.alvrlq.Bind(wx.EVT_CHECKBOX, self.on_alvrlq)
 
         self.fgbs.Add(alvchbxsgsizer, (3, 1), flag=idxflags, border=2)
 
         alvchbxsymsizer = wx.BoxSizer(wx.VERTICAL)
-        alvchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Anorexia (1)', name='alvchbxanorexia'))
-        alvchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Migration of pain (1)', name='alvchbxmig' ))
-        alvchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Nausea or vomiting (1)', name='alvchbxnausea'))
+
+        self.alvanorexia = wx.CheckBox(self.gbf_panel, -1, 'Anorexia (1)', name='alvchbxanorexia')
+        alvchbxsymsizer.Add(self.alvanorexia)
+        self.obj_links['alvchbxanorexia'] = 'ripchbxanorexia'
+        self.alvanorexia.Bind(wx.EVT_CHECKBOX, self.on_alvanorexia)
+
+        self.alvmig = wx.CheckBox(self.gbf_panel, -1, 'Migration of pain (1)', name='alvchbxmig' )
+        alvchbxsymsizer.Add(self.alvmig)
+        self.obj_links['alvchbxmig'] = 'ripchbxmig'
+        self.alvmig.Bind(wx.EVT_CHECKBOX, self.on_alvmig)
+
+        self.alvnausea = wx.CheckBox(self.gbf_panel, -1, 'Nausea or vomiting (1)', name='alvchbxnausea')
+        alvchbxsymsizer.Add(self.alvnausea )
+        self.obj_links['alvchbxnausea'] = 'ripchbxnausea'
+        self.alvnausea.Bind(wx.EVT_CHECKBOX, self.on_alvnausea)
+
         self.fgbs.Add(alvchbxsymsizer, (4, 1), flag=idxflags, border=2)
 
 
@@ -188,25 +241,37 @@ class MainFrame(wx.Frame):
         self.obj_links['ripchbxfever'] = 'alvchbxfever'
         self.ripfever.Bind(wx.EVT_CHECKBOX, self.on_ripfever)
 
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Rebound pain (1)', name='ripchbxrebound'))
+        self.riprebound = wx.CheckBox(self.gbf_panel, -1, 'Rebound pain (1)', name='ripchbxrebound')
+        ripchbxsgsizer.Add(self.riprebound)
+        self.obj_links['ripchbxrebound'] = 'alvchbxrebound'
+        self.riprebound.Bind(wx.EVT_CHECKBOX, self.on_riprebound)
 
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'RLQ tenderness (2)', name='ripchbxsgrlq'))
+        self.riprlq = wx.CheckBox(self.gbf_panel, -1, 'RLQ tenderness (2)', name='ripchbxrlq')
+        ripchbxsgsizer.Add(self.riprlq)
+        self.obj_links['ripchbxrlq'] = 'alvchbxrlq'
+        self.riprlq.Bind(wx.EVT_CHECKBOX, self.on_riprlq)
 
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Guarding (2)', name='ripchbxsggrd'))
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Rovsing sign (2)', name='ripchbxsgrs'))
+        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Guarding (2)', name='ripchbxgrd'))
+        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Rovsing sign (2)', name='ripchbxrs'))
         self.fgbs.Add(ripchbxsgsizer, (3, 2), flag=idxflags, border=2)
 
-        """
-        fgbs.Add(wx.TextCtrl(self.gbf_panel, -1, "Anorexia 1\nMigration of pain 1\nNausea & Vomiting 1"
-                                            "\nRLQ pain 0.5\nDurations of sx's <= 48hr 1"
-                                            "Durations of sx's > 40hr 0.5",
-                             style=wx.BORDER_SIMPLE | wx.TE_READONLY | wx.TE_NO_VSCROLL | wx.TE_MULTILINE),
-                 (4, 2), flag=idxflags, border=2)
-        """
         ripchbxsymsizer = wx.BoxSizer(wx.VERTICAL)
-        ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Anorexia (1)', name='ripchbxsymanorexia'))
-        ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Migration of pain (0.5)', name='ripchbxsymmig'))
-        ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Nausea or vomiting (1)', name='ripchbxsymnausea'))
+
+        self.ripanorexia = wx.CheckBox(self.gbf_panel, -1, 'Anorexia (1)', name='ripchbxanorexia')
+        ripchbxsymsizer.Add(self.ripanorexia)
+        self.obj_links['ripchbxanorexia'] = 'alvchbxanorexia'
+        self.ripanorexia.Bind(wx.EVT_CHECKBOX, self.on_ripanorexia)
+
+        self.ripmig = wx.CheckBox(self.gbf_panel, -1, 'Migration of pain (0.5)', name='ripchbxmig')
+        ripchbxsymsizer.Add(self.ripmig)
+        self.obj_links['ripchbxmig'] = 'alvchbxmig'
+        self.ripmig.Bind(wx.EVT_CHECKBOX, self.on_ripmig)
+
+        self.ripnausea = wx.CheckBox(self.gbf_panel, -1, 'Nausea or vomiting (1)', name='ripchbxnausea')
+        ripchbxsymsizer.Add(self.ripnausea)
+        self.obj_links['ripchbxnausea'] = 'alvchbxnausea'
+        self.ripnausea.Bind(wx.EVT_CHECKBOX, self.on_ripnausea)
+
         ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'RLQ pain (0.5)', name='ripchbxsymrlq'))
         ripchbxsymsizer.Add(wx.StaticText(self.gbf_panel, -1,  'Duration of symptoms:'))
         ripchbxsymsizer.Add(wx.RadioButton(self.gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbsmdur'))
