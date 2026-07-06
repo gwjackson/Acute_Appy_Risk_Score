@@ -63,7 +63,7 @@ class MainFrame(wx.Frame):
         :param value: Event - state
         :return: None, causes change of state to target object
         """
-        print(self.obj_links)
+        #print(self.obj_links)
         if src_name in self.obj_links:
             target_name = self.obj_links[src_name]
             target = self.gbf_panel.FindWindowByName(target_name)
@@ -114,17 +114,20 @@ class MainFrame(wx.Frame):
 
 
     # the business logic to collect the score values.
+    # following ar RIPASA (points)
+
+    # ?? rename the on_rb_xxx as not really gone to read on click but on report generation ??
     def on_rb_age(self, event):
         radio_selected = event.GetEventObject()
-        if ">" in radio_selected.GetLabel():
-            self.rb_age_value = 0.5
+        if "<=" in radio_selected.GetLabel():
+            self.rb_age_value = 1
         else:
-            self.rb_age_vale = 1
-        print(f'RB age clicked {radio_selected.GetLabel()} and value is {self.rb_age}')
+            self.rb_age_value = 0.5
+        print(f'RB age clicked {radio_selected.GetLabel()} and value is {self.rb_age_value}')
 
     def on_rb_sex(self, event):
         radio_selected = event.GetEventObject()
-        if 'male' in radio_selected.GetLabel():
+        if 'Male' in radio_selected.GetLabel():
             self.rb_sex_value = 1
         else:
             self.rb_sex_value = 0.5
@@ -138,6 +141,35 @@ class MainFrame(wx.Frame):
             self.rb_time_value = 1
         print(f'RB duration clicked {radio_selected.GetLabel()} and value is {self.rb_time_value}')
 
+
+    # the following are Alvarado (points)
+    alv_list = ['alvleuk', 'alvleft', 'alvfever', 'alvrebound', 'alvrlq', 'alvanorexia', 'alvmig', 'alvnausea']
+    # RIPASA (points) list
+    rip_list = [
+        'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
+        'ripleuk', 'ripua', 'ripfever', 'riprebound',
+        'riprlq', 'ripgrd', 'riprs', 'ripanorexia', 'ripmig',
+        'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
+    ]
+
+    # -----------------------------------------------------------------------------------------------
+    ##### report - Alvarado #####
+    # -----------------------------------------------------------------------------------------------
+    def alvarado_report(self,event=None):
+        print('Got your report right here')
+    # ------------------------------------------------------------------------------------------------
+    ##### report - RIPASA #####
+    # -----------------------------------------------------------------------------------------------
+    def ripasa_report(self, event=None):
+        print('Got your report right here')
+    # -----------------------------------------------------------------------------------------------
+    ##### report - combo -Alvarado / RIPASA #####
+    # -----------------------------------------------------------------------------------------------
+    def combo_report(self, event=None):
+        print('Got your reports right here')
+
+    def on_reset(self, event=None ):
+        print('Reset and start over')
 
     def on_exit(self, event):
         self.Close()
@@ -197,7 +229,9 @@ class MainFrame(wx.Frame):
         self.obj_links["alvckbxwbc"] = "ripchbxwbc"
         self.alvleuk.Bind(wx.EVT_CHECKBOX, self.on_alvleuk)
 
-        alvchbxWBCsizer.Add(wx.CheckBox(self.gbf_panel, -1, "Left shift (1)", name='alvckbxleftshift'))
+        self.alvleft = wx.CheckBox(self.gbf_panel, -1, "Left shift (1)", name='alvckbxleftshift')
+        alvchbxWBCsizer.Add(self.alvleft)
+
         self.fgbs.Add(alvchbxWBCsizer, (2, 1), flag=idxflags, border=2)
 
         alvchbxsgsizer = wx.BoxSizer(wx.VERTICAL)
@@ -271,7 +305,9 @@ class MainFrame(wx.Frame):
         self.ripleuk.Bind(wx.EVT_CHECKBOX, self.on_ripleuk)
 
         ripchbxwbcsizer.Add(wx.StaticText(self.gbf_panel, -1,  '- - - '))
-        ripchbxwbcsizer.Add(wx.CheckBox(self.gbf_panel, -1,  'Neg. Urinalysis (1)', name='uaWNL' ))
+
+        self.ripua = wx.CheckBox(self.gbf_panel, -1,  'Neg. Urinalysis (1)', name='uaWNL')
+        ripchbxwbcsizer.Add(self.ripua)
         self.fgbs.Add(ripchbxwbcsizer,(2, 2), flag=idxflags, border=2)
 
         ripchbxsgsizer = wx.BoxSizer(wx.VERTICAL)
@@ -290,8 +326,12 @@ class MainFrame(wx.Frame):
         self.obj_links['ripchbxrlq'] = 'alvchbxrlq'
         self.riprlq.Bind(wx.EVT_CHECKBOX, self.on_riprlq)
 
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Guarding (2)', name='ripchbxgrd'))
-        ripchbxsgsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'Rovsing sign (2)', name='ripchbxrs'))
+        self.ripgrd = wx.CheckBox(self.gbf_panel, -1, 'Guarding (2)', name='ripchbxgrd')
+        ripchbxsgsizer.Add(self.ripgrd)
+
+        self.riprs =  wx.CheckBox(self.gbf_panel, -1, 'Rovsing sign (2)', name='ripchbxrs')
+        ripchbxsgsizer.Add(self.riprs)
+
         self.fgbs.Add(ripchbxsgsizer, (3, 2), flag=idxflags, border=2)
 
         ripchbxsymsizer = wx.BoxSizer(wx.VERTICAL)
@@ -311,7 +351,9 @@ class MainFrame(wx.Frame):
         self.obj_links['ripchbxnausea'] = 'alvchbxnausea'
         self.ripnausea.Bind(wx.EVT_CHECKBOX, self.on_ripnausea)
 
-        ripchbxsymsizer.Add(wx.CheckBox(self.gbf_panel, -1, 'RLQ pain (0.5)', name='ripchbxsymrlq'))
+        self.riplrq2 = wx.CheckBox(self.gbf_panel, -1, 'RLQ pain (0.5)', name='ripchbxsymrlq')
+        ripchbxsymsizer.Add(self.riplrq2)
+
         ripchbxsymsizer.Add(wx.StaticText(self.gbf_panel, -1,  'Duration of symptoms:'))
 
         self.riprblt48 = wx.RadioButton(self.gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbdurlt48')
@@ -380,20 +422,31 @@ class MainFrame(wx.Frame):
         rbox = wx.StaticBox(panel, label="Reports")
         rbox_sizer = wx.StaticBoxSizer(rbox, wx.VERTICAL)
 
-        rbox_sizer.Add(wx.Button(panel, label="Alvardo"), 0, wx.EXPAND, 0)
-        rbox_sizer.Add(wx.Button(panel, label="RIPASA"), 0, wx.EXPAND, 0)
-        rbox_sizer.Add(wx.Button(panel, label="Both"), 0, wx.EXPAND, 0)
+        self.rp_alvarado = wx.Button(panel, label="Alvardo")
+        rbox_sizer.Add(self.rp_alvarado, 0, wx.EXPAND, 0)
+        self.rp_alvarado.Bind(wx.EVT_BUTTON, self.alvarado_report)
+
+        self.rp_ripasa = wx.Button(panel, label="RIPASA")
+        rbox_sizer.Add(self.rp_ripasa, 0, wx.EXPAND, 0)
+        self.rp_ripasa.Bind(wx.EVT_BUTTON, self.ripasa_report)
+
+        self.rp_both = wx.Button(panel, label="Both")
+        rbox_sizer.Add(self.rp_both, 0, wx.EXPAND, 0)
+        self.rp_both.Bind(wx.EVT_BUTTON, self.combo_report)
+
         button_row_sizer.Add(rbox_sizer, 1, 5)
 
         obox = wx.StaticBox(panel, label="Options")
         obox_sizer = wx.StaticBoxSizer(obox, wx.VERTICAL)
 
-        #obox_sizer = wx.BoxSizer(wx.VERTICAL)
-        obox_sizer.Add(wx.Button(panel, label="Reset"), 0, wx.EXPAND, 0)
+        self.ob_reset = wx.Button(panel, label="Reset")
+        obox_sizer.Add(self.ob_reset, 0, wx.EXPAND, 0)
+        self.ob_reset.Bind(wx.EVT_BUTTON, self.on_reset)
         obox_sizer.Add(0, 25)
-        exit_but=wx.Button(panel, label="Exit")
-        exit_but.Bind(wx.EVT_BUTTON, self.on_exit)
-        obox_sizer.Add((exit_but), 0, wx.EXPAND, 0)
+
+        self.exit_but=wx.Button(panel, label="Exit")
+        self.exit_but.Bind(wx.EVT_BUTTON, self.on_exit)
+        obox_sizer.Add((self.exit_but), 0, wx.EXPAND, 0)
         button_row_sizer.Add(obox_sizer, 1, 5)
 
         return button_row_sizer
