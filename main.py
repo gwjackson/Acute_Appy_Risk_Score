@@ -142,16 +142,6 @@ class MainFrame(wx.Frame):
             self.rb_time_value = 1
         print(f'RB duration clicked {radio_selected.GetLabel()} and value is {self.rb_time_value}')
 
-
-    """
-    # RIPASA (points) list
-    self.rip_list = [
-        'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
-        'ripleuk', 'ripua', 'ripfever', 'riprebound',
-        'riprlq', 'ripgrd', 'riprs', 'ripanorexia', 'ripmig',
-        'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
-    ]
-    """
     # -----------------------------------------------------------------------------------------------
     ##### report - Alvarado #####
     # -----------------------------------------------------------------------------------------------
@@ -173,7 +163,7 @@ class MainFrame(wx.Frame):
                 match = re.search(r'\d+\.\d+|\d+', label_text)
                 if match:
                     self.alv_score += float(match.group(0))
-        self.alv_report = self.alv_report + f'\nThe Patients risk score is: {self.alv_score}\n'
+        self.alv_report = self.alv_report + f'The Patients risk score is: {self.alv_score}\n'
         print(self.alv_report)
 
         # copy to the clipboard
@@ -184,9 +174,41 @@ class MainFrame(wx.Frame):
 
     # ------------------------------------------------------------------------------------------------
     ##### report - RIPASA #####
+    # potentially could combine (self, rip/alv_list, event=None)
     # -----------------------------------------------------------------------------------------------
     def ripasa_report(self, event=None):
+        # RIPASA (points) list
+        self.rip_list = [
+            'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
+            'ripleuk', 'ripua', 'ripfever', 'riprebound',
+            'riprlq', 'ripgrd', 'riprs', 'ripanorexia', 'ripmig',
+            'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
+        ]
         print('Got your report right here')
+        self.rip_report = 'RIPASA Adult Acute Appendicitis Score\nThe Patients risk points are: \n'
+        self.rip_score = 0
+
+        for name in self.rip_list:
+            widget = getattr(self, name)
+
+            # .GetValue() returns True if checkbox or radiobutton checked / selected
+            if widget and widget.GetValue():
+                label_text = widget.GetLabel()
+                self.rip_report = self.rip_report + label_text + '\n'
+
+                # (?<=\() means "must start with ("
+                # (?=\)) means "must end with )"
+                # It only captures the number in between them
+                match = re.search(r'(?<=\()(\d+\.\d+|\d+)(?=\))', label_text)
+                if match:
+                    self.rip_score += float(match.group(0))
+        self.rip_report = self.rip_report + f'The Patients risk score is: {self.rip_score}\n'
+        print(self.rip_report)
+
+        # copy to the clipboard
+        if wx.TheClipboard.Open():
+            wx.TheClipboard.SetData(wx.TextDataObject(self.rip_report))
+            wx.TheClipboard.Close()
     # -----------------------------------------------------------------------------------------------
     ##### report - combo -Alvarado / RIPASA #####
     # -----------------------------------------------------------------------------------------------
