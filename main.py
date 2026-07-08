@@ -8,6 +8,7 @@
 
 import wx
 import re
+from functools import partial
 import wx.html2 as wv       # webview
 
 
@@ -69,6 +70,15 @@ class MainFrame(wx.Frame):
             target_name = self.obj_links[src_name]
             target = self.gbf_panel.FindWindowByName(target_name)
             target.SetValue(value)
+
+    # the lists of risk options for each of the 2 scoring systems Alvarado / RIPASA
+    alv_list = ['alvleuk', 'alvleft', 'alvfever', 'alvrebound', 'alvrlq', 'alvanorexia', 'alvmig', 'alvnausea']
+    rip_list = [
+        'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
+        'ripleuk', 'ripua', 'ripfever', 'riprebound',
+        'riprlq', 'ripgrd', 'riprs', 'ripanorexia', 'ripmig',
+        'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
+    ]
 
     # still need to add real functionality to these will be in a different method, this is just linking
     def on_alvleuk(self, event):
@@ -143,77 +153,65 @@ class MainFrame(wx.Frame):
         print(f'RB duration clicked {radio_selected.GetLabel()} and value is {self.rb_time_value}')
 
     # -----------------------------------------------------------------------------------------------
-    ##### report - Alvarado #####
+    ##### generic report -  #####
     # -----------------------------------------------------------------------------------------------
-    def alvarado_report(self,event=None):
-        # the following are Alvarado (points)
-        self.alv_list = ['alvleuk', 'alvleft', 'alvfever', 'alvrebound', 'alvrlq', 'alvanorexia', 'alvmig', 'alvnausea']
-        #print('Got your report right here')
-        self.alv_report = 'Alvarado Adult Acute Appendicitis Score\nThe Patients risk points are: \n'
-        self.alv_score = 0
+    def risk_score_report(self,list_of_objs, report_name, event=None):
+        """
+        Generic for the risk reports
+        :param list_of_objs: a list of the GUI objects the user clicks created with the creation of each object
+        :param report_name: Name of the report Alvarado or RIPASA
+        :param event: the click even
+        :return: risk_report
+        """
+        self.targets_list = list_of_objs
+        self.risk_report = f'{report_name} Adult Acute Appendicitis Score\nThe Patients risk points are: \n'
+        self.risk_score = 0
 
-        for name in self.alv_list:
-            widget = getattr(self, name)
+        for target in self.targets_list:
+            widget = getattr(self, target)
 
             # .GetValue() returns True if checkbox or radiobutton checked / selected
             if widget and widget.GetValue():
                 label_text = widget.GetLabel()
-                self.alv_report = self.alv_report + label_text + '\n'
-
-                match = re.search(r'\d+\.\d+|\d+', label_text)
-                if match:
-                    self.alv_score += float(match.group(0))
-        self.alv_report = self.alv_report + f'The Patients risk score is: {self.alv_score}\n'
-        print(self.alv_report)
-
-        # copy to the clipboard
-        if wx.TheClipboard.Open():
-            wx.TheClipboard.SetData(wx.TextDataObject(self.alv_report))
-            wx.TheClipboard.Close()
-
-
-    # ------------------------------------------------------------------------------------------------
-    ##### report - RIPASA #####
-    # potentially could combine (self, rip/alv_list, event=None)
-    # -----------------------------------------------------------------------------------------------
-    def ripasa_report(self, event=None):
-        # RIPASA (points) list
-        self.rip_list = [
-            'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
-            'ripleuk', 'ripua', 'ripfever', 'riprebound',
-            'riprlq', 'ripgrd', 'riprs', 'ripanorexia', 'ripmig',
-            'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
-        ]
-        print('Got your report right here')
-        self.rip_report = 'RIPASA Adult Acute Appendicitis Score\nThe Patients risk points are: \n'
-        self.rip_score = 0
-
-        for name in self.rip_list:
-            widget = getattr(self, name)
-
-            # .GetValue() returns True if checkbox or radiobutton checked / selected
-            if widget and widget.GetValue():
-                label_text = widget.GetLabel()
-                self.rip_report = self.rip_report + label_text + '\n'
+                self.risk_report = self.risk_report + label_text + '\n'
 
                 # (?<=\() means "must start with ("
                 # (?=\)) means "must end with )"
                 # It only captures the number in between them
                 match = re.search(r'(?<=\()(\d+\.\d+|\d+)(?=\))', label_text)
                 if match:
-                    self.rip_score += float(match.group(0))
-        self.rip_report = self.rip_report + f'The Patients risk score is: {self.rip_score}\n'
-        print(self.rip_report)
+                    self.risk_score += float(match.group(0))
+        self.risk_report = self.risk_report + f'The Patients risk score is: {self.risk_score}\n'
+        print(self.risk_report)
 
         # copy to the clipboard
         if wx.TheClipboard.Open():
-            wx.TheClipboard.SetData(wx.TextDataObject(self.rip_report))
+            wx.TheClipboard.SetData(wx.TextDataObject(self.risk_report))
             wx.TheClipboard.Close()
+
+        return self.risk_report
+
+
     # -----------------------------------------------------------------------------------------------
     ##### report - combo -Alvarado / RIPASA #####
     # -----------------------------------------------------------------------------------------------
     def combo_report(self, event=None):
+        """
+        This just calls the report_score_function twice
+        and copies the concatenation of both reports to the clipboard
+        :param event: ignored
+        :return: None
+        """
         print('Got your reports right here')
+        combo_report = self.risk_score_report(self.rip_list, 'RIPASA')
+
+        combo_report = combo_report + "\n" + self.risk_score_report(self.alv_list, 'Alvarado')
+
+        if wx.TheClipboard.Open():
+            wx.TheClipboard.SetData(wx.TextDataObject(combo_report))
+            wx.TheClipboard.Close()
+
+
 
     def on_reset(self, event=None ):
         print('Reset and start over')
@@ -403,11 +401,11 @@ class MainFrame(wx.Frame):
 
         ripchbxsymsizer.Add(wx.StaticText(self.gbf_panel, -1,  'Duration of symptoms:'))
 
-        self.riprblt48 = wx.RadioButton(self.gbf_panel, -1, "<= 48 hours (1)", style=wx.RB_GROUP, name='riprbdurlt48')
+        self.riprblt48 = wx.RadioButton(self.gbf_panel, -1, "time <= 48 hours (1)", style=wx.RB_GROUP, name='riprbdurlt48')
         ripchbxsymsizer.Add(self.riprblt48)
         self.riprblt48.Bind(wx.EVT_RADIOBUTTON, self.on_rb_time)
 
-        self.riprbgt48 = wx.RadioButton(self.gbf_panel, -1, "> 48 hours (0.5)", name='riprbdurgt48')
+        self.riprbgt48 = wx.RadioButton(self.gbf_panel, -1, "time > 48 hours (0.5)", name='riprbdurgt48')
         ripchbxsymsizer.Add(self.riprbgt48)
         self.riprbgt48.Bind(wx.EVT_RADIOBUTTON, self.on_rb_time)
 
@@ -469,13 +467,14 @@ class MainFrame(wx.Frame):
         rbox = wx.StaticBox(panel, label="Reports")
         rbox_sizer = wx.StaticBoxSizer(rbox, wx.VERTICAL)
 
+        # using partial to inject additional arguments tino the bound function
         self.rp_alvarado = wx.Button(panel, label="Alvardo")
         rbox_sizer.Add(self.rp_alvarado, 0, wx.EXPAND, 0)
-        self.rp_alvarado.Bind(wx.EVT_BUTTON, self.alvarado_report)
+        self.rp_alvarado.Bind(wx.EVT_BUTTON, partial(self.risk_score_report, self.alv_list, 'Alvarado'))
 
         self.rp_ripasa = wx.Button(panel, label="RIPASA")
         rbox_sizer.Add(self.rp_ripasa, 0, wx.EXPAND, 0)
-        self.rp_ripasa.Bind(wx.EVT_BUTTON, self.ripasa_report)
+        self.rp_ripasa.Bind(wx.EVT_BUTTON,  partial(self.risk_score_report, self.rip_list, 'RIPASA'))
 
         self.rp_both = wx.Button(panel, label="Both")
         rbox_sizer.Add(self.rp_both, 0, wx.EXPAND, 0)
