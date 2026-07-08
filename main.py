@@ -357,7 +357,7 @@ class MainFrame(wx.Frame):
         self.fgbs.Add(riprbsizer,(1, 2), flag=idxflags, border=2)
 
         ripchbxwbcsizer = wx.BoxSizer(wx.VERTICAL)
-        self.ripleuk = wx.CheckBox(self.gbf_panel, -1,  'Leucocytosis (1)', name="ripchbxwbc")
+        self.ripleuk = wx.CheckBox(self.gbf_panel, -1,  'Leukocytosis (1)', name="ripchbxwbc")
         ripchbxwbcsizer.Add(self.ripleuk)
         self.obj_links["ripchbxwbc"] = "alvckbxwbc"
         self.ripleuk.Bind(wx.EVT_CHECKBOX, self.on_ripleuk)
