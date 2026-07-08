@@ -32,5 +32,8 @@ Original creation date 06/21/2026
 
 It very much use as is and at your own risk. 
 
-not fully functional yet - but coming soon
+Not fully functional ye - but coming soon 06/29/2026
+Fairly functional for now; still have to build in the menu system; 07/07/2026
+
+
 comments appreciated (be kind)
