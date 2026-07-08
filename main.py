@@ -1,6 +1,7 @@
 # Author: Walker Jackson, MD
 # email gwjackson53@gmail.com
 # from source material listed in code files
+# https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems
 # initial commit - 06/22,2026
 
 # now the main backup before refactoring
@@ -80,7 +81,8 @@ class MainFrame(wx.Frame):
         'ripnausea', 'riplrq2', 'riprblt48', 'riprbgt48'
     ]
 
-    # still need to add real functionality to these will be in a different method, this is just linking
+    # this is just linking common GUI objects where both scoring systems share the same clinical feature
+    # no business logic here - see the report function(s) for that
     def on_alvleuk(self, event):
         self.obj_link('alvckbxwbc', event.IsChecked())
 
@@ -126,6 +128,7 @@ class MainFrame(wx.Frame):
 
     # the business logic to collect the score values.
     # following ar RIPASA (points)
+    # not using this - will delete these in the near future (tired just now)
 
     # ?? rename the on_rb_xxx as not really gone to read on click but on report generation ??
     def on_rb_age(self, event):
@@ -155,7 +158,7 @@ class MainFrame(wx.Frame):
     # -----------------------------------------------------------------------------------------------
     ##### generic report -  #####
     # -----------------------------------------------------------------------------------------------
-    def risk_score_report(self,list_of_objs, report_name, event=None):
+    def risk_score_report(self,list_of_objs, report_name, show_msgbox = True, event=None):
         """
         Generic for the risk reports
         :param list_of_objs: a list of the GUI objects the user clicks created with the creation of each object
@@ -181,13 +184,19 @@ class MainFrame(wx.Frame):
                 match = re.search(r'(?<=\()(\d+\.\d+|\d+)(?=\))', label_text)
                 if match:
                     self.risk_score += float(match.group(0))
-        self.risk_report = self.risk_report + f'The Patients risk score is: {self.risk_score}\n'
-        print(self.risk_report)
+        self.risk_report = self.risk_report + (f'The Patients risk score is: {self.risk_score}\n'
+                                               f'The cutoff score is: {">=7" if report_name == "Alvarado" else ">= 7.5"}\n')
+        #print(self.risk_report)
 
         # copy to the clipboard
         if wx.TheClipboard.Open():
             wx.TheClipboard.SetData(wx.TextDataObject(self.risk_report))
             wx.TheClipboard.Close()
+
+        if show_msgbox:
+            msgbox = wx.MessageDialog(self, self.risk_report, f'{report_name} Risk Report', wx.OK)
+            msgbox.ShowModal()
+            msgbox.Destroy()
 
         return self.risk_report
 
@@ -203,13 +212,17 @@ class MainFrame(wx.Frame):
         :return: None
         """
         print('Got your reports right here')
-        combo_report = self.risk_score_report(self.rip_list, 'RIPASA')
+        combo_report = self.risk_score_report(self.rip_list, 'RIPASA', show_msgbox=False)
 
-        combo_report = combo_report + "\n" + self.risk_score_report(self.alv_list, 'Alvarado')
+        combo_report = combo_report + "\n" + self.risk_score_report(self.alv_list, 'Alvarado', show_msgbox=False)
 
         if wx.TheClipboard.Open():
             wx.TheClipboard.SetData(wx.TextDataObject(combo_report))
             wx.TheClipboard.Close()
+
+        msgbox = wx.MessageDialog(self, combo_report, f'Combo -  Risk Report', wx.OK)
+        msgbox.ShowModal()
+        msgbox.Destroy()
 
 
 
@@ -470,7 +483,7 @@ class MainFrame(wx.Frame):
         # using partial to inject additional arguments tino the bound function
         self.rp_alvarado = wx.Button(panel, label="Alvardo")
         rbox_sizer.Add(self.rp_alvarado, 0, wx.EXPAND, 0)
-        self.rp_alvarado.Bind(wx.EVT_BUTTON, partial(self.risk_score_report, self.alv_list, 'Alvarado'))
+        self.rp_alvarado.Bind(wx.EVT_BUTTON, partial(self.risk_score_report, self.alv_list, 'Alvarado', True))
 
         self.rp_ripasa = wx.Button(panel, label="RIPASA")
         rbox_sizer.Add(self.rp_ripasa, 0, wx.EXPAND, 0)
