@@ -73,6 +73,7 @@ class MainFrame(wx.Frame):
             target.SetValue(value)
 
     # the lists of risk options for each of the 2 scoring systems Alvarado / RIPASA
+    # i plan to also make th9is responsibility of the object to register it with this dict
     alv_list = ['alvleuk', 'alvleft', 'alvfever', 'alvrebound', 'alvrlq', 'alvanorexia', 'alvmig', 'alvnausea']
     rip_list = [
         'riprble40', 'riprbgt40', 'riprbfemale', 'riprbmale',
@@ -195,6 +196,7 @@ class MainFrame(wx.Frame):
 
         if show_msgbox:
             msgbox = wx.MessageDialog(self, self.risk_report, f'{report_name} Risk Report', wx.OK)
+            # -lan to add wx.CallLater to put in anautomatic timeout for the messagebox
             msgbox.ShowModal()
             msgbox.Destroy()
 
