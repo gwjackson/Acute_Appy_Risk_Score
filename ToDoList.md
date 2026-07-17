@@ -10,4 +10,4 @@ browser as apposed to keeping the documents local.
 
 [ ]
 
-[ ]
+[ ] Reset button guess should have one, but not really needed and not implemented for now
