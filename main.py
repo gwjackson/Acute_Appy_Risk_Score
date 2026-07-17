@@ -237,10 +237,7 @@ class MainFrame(wx.Frame):
     #-----------------------------------------------------------------------------------------------
     ##### gridbagsizer #####
     #-----------------------------------------------------------------------------------------------
-    """
-    TODO: add the code for the user selections
-    All I have now is just the layout
-    """
+    
     def _build_fbgs_grid(self, gbf_panel):
         self.fgbs = wx.GridBagSizer(2, 2)
 
