@@ -186,7 +186,12 @@ class MainFrame(wx.Frame):
                     self.risk_score += float(match.group(0))
         self.risk_report = self.risk_report + (f'The Patients risk score is: {self.risk_score}\n'
                                                f'The cutoff score is: {">=7" if report_name == "Alvarado" else ">= 7.5"}\n')
-        #print(self.risk_report)
+
+        # Define a helper function to simulate hitting the 'Enter' key
+        def timeout_close():
+            sim = wx.UIActionSimulator()
+            sim.Char(wx.WXK_RETURN)  # Simulates pressing the Enter key
+
 
         # copy to the clipboard
         if wx.TheClipboard.Open():
@@ -194,8 +199,16 @@ class MainFrame(wx.Frame):
             wx.TheClipboard.Close()
 
         if show_msgbox:
-            msgbox = wx.MessageDialog(self, self.risk_report, f'{report_name} Risk Report', wx.OK)
-            msgbox.ShowModal()
+            msgbox = wx.RichMessageDialog(self, self.risk_report, f'{report_name} Risk Report', wx.OK| wx.ICON_INFORMATION)
+
+            # Plan to add wx.CallLater to put in an automatic timeout for the messagebox
+            msgbox_timer = wx.CallLater(3000,timeout_close)
+            msgbox_result = msgbox.ShowModal()
+
+            # Clean up the timer if the user clicked OK manually before 3 seconds
+            if msgbox_timer.IsRunning():
+                msgbox_timer.Stop()
+
             msgbox.Destroy()
 
         return self.risk_report
@@ -211,17 +224,30 @@ class MainFrame(wx.Frame):
         :param event: ignored
         :return: None
         """
-        print('Got your reports right here')
-        combo_report = self.risk_score_report(self.rip_list, 'RIPASA', show_msgbox=False)
 
-        combo_report = combo_report + "\n" + self.risk_score_report(self.alv_list, 'Alvarado', show_msgbox=False)
+        self.combo_report = self.risk_score_report(self.rip_list, 'RIPASA', show_msgbox=False)
+        self.combo_report = self.combo_report + "\n" + self.risk_score_report(self.alv_list, 'Alvarado', show_msgbox=False)
 
         if wx.TheClipboard.Open():
-            wx.TheClipboard.SetData(wx.TextDataObject(combo_report))
+            wx.TheClipboard.SetData(wx.TextDataObject(self.combo_report))
             wx.TheClipboard.Close()
 
-        msgbox = wx.MessageDialog(self, combo_report, f'Combo -  Risk Report', wx.OK)
-        msgbox.ShowModal()
+
+        # Define a helper function to simulate hitting the 'Enter' key
+        def timeout_close():
+            sim = wx.UIActionSimulator()
+            sim.Char(wx.WXK_RETURN)  # Simulates pressing the Enter key
+
+        msgbox = wx.RichMessageDialog(self, self.combo_report, f'Combo - Risk Report', wx.OK | wx.ICON_INFORMATION)
+
+        # Plan to add wx.CallLater to put in an automatic timeout for the messagebox
+        msgbox_timer = wx.CallLater(3000, timeout_close)
+        msgbox_result = msgbox.ShowModal()
+
+        # Clean up the timer if the user clicked OK manually before 3 seconds
+        if msgbox_timer.IsRunning():
+            msgbox_timer.Stop()
+
         msgbox.Destroy()
 
 
