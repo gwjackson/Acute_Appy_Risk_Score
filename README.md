@@ -28,13 +28,16 @@ I am doing this both as a useful tool and as a practice module for learning Pyth
 There are only 2 dependencies for this, Python 13.x and wxPython 4.x.  No 'packaging' at this point yet, planning to
 figure that out. 
 
-Original creation date 06/21/2026
-
 It very much use as is and at your own risk. 
 
-Not fully functional yet - but coming soon 06/29/2026
+06/21/2026; Original creation date 
 
-Fairly functional for now; still have to build in the menu system; 07/07/2026
 
+06/29/2026; Not fully functional yet - but coming soon 
+
+07/07/2026; Fairly functional for now; still have to build in the menu system; 
+
+07/19/26; Have the citations menus added, but the AAFP link to the primary article
+issue just not accessing the website??? 
 
 comments appreciated (be kind)
