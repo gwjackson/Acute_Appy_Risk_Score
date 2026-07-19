@@ -3,6 +3,7 @@
 # from source material listed in code files
 # https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems
 # initial commit - 06/22,2026
+import webbrowser
 
 # now the main backup before refactoring
 
@@ -250,7 +251,39 @@ class MainFrame(wx.Frame):
 
         msgbox.Destroy()
 
+    # -----------------------------------------------------------------------------------------------
+    ##### menu selection actions #####
+    # sadly most of these require a user key
+    # reference 1; https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427
+    # reference 2; https://www.americanjournalofsurgery.com/article/S0002-9610(24)00675-5/abstract
+    # reference 3; https://www.annemergmed.com/article/S0196-0644(86)80993-3/abstract
+    # reference 4: https://www.sciencedirect.com/science/article/abs/pii/S0735675706004153
+    # reference 5; http://www.smj.org.sg/sites/default/files/5103/5103a4.pdf
+    # -----------------------------------------------------------------------------------------------
 
+    def on_primary_reference(self, event):
+        webbrowser.open('https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427')
+
+    def on_reference_1(self, event):
+        webbrowser.open('https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427')
+
+    def on_reference_2(self, event):
+        webbrowser.open('https://www.americanjournalofsurgery.com/article/S0002-9610(24)00675-5/abstract')
+
+    def on_reference_3(self, event):
+        webbrowser.open('https://www.annemergmed.com/article/S0196-0644(86)80993-3/abstract')
+
+    def on_reference_4(self, event):
+        webbrowser.open('https://www.sciencedirect.com/science/article/abs/pii/S0735675706004153')
+
+    def on_reference_5(self, event):
+        webbrowser.open('http://www.smj.org.sg/sites/default/files/5103/5103a4.pdf')
+
+
+
+    # -----------------------------------------------------------------------------------------------
+    ##### Options buttons #####
+    # -----------------------------------------------------------------------------------------------
 
     def on_reset(self, event=None ):
         print('Reset and start over')
@@ -481,6 +514,7 @@ class MainFrame(wx.Frame):
 
     #-----------------------------------------------------------------------------------------------
     # MENU BAR
+    # sadly most of these require a user key
     #-----------------------------------------------------------------------------------------------
     def _build_menu(self):
         menu_bar = wx.MenuBar()
@@ -491,6 +525,29 @@ class MainFrame(wx.Frame):
         menu_bar.Append(about_menu, "&About")
         menu_bar.Append(citations_menu, "&Citations")
         menu_bar.Append(help_menu, "&Help")
+
+        #######################
+        # Citations menu
+        primary_reference_item = citations_menu.Append(wx.ID_ANY, "&Primary Reference",
+                                                       'The AAFP journal article')
+        self.Bind(wx.EVT_MENU, self.on_primary_reference, primary_reference_item)
+
+        seperator_item = citations_menu.Append(wx.ID_SEPARATOR)
+
+        referenct_1_item = citations_menu.Append(wx.ID_ANY, "&Reference 1")
+        self.Bind(wx.EVT_MENU, self.on_reference_1, referenct_1_item)
+
+        referenct_2_item = citations_menu.Append(wx.ID_ANY, "&Reference 2")
+        self.Bind(wx.EVT_MENU, self.on_reference_2, referenct_2_item)
+
+        referenct_3_item = citations_menu.Append(wx.ID_ANY, "&Reference 3")
+        self.Bind(wx.EVT_MENU, self.on_reference_3, referenct_3_item)
+
+        referenct_4_item = citations_menu.Append(wx.ID_ANY, "&Reference 4")
+        self.Bind(wx.EVT_MENU, self.on_reference_4, referenct_4_item)
+
+        referenct_5_item = citations_menu.Append(wx.ID_ANY, "&Reference 5")
+        self.Bind(wx.EVT_MENU, self.on_reference_5, referenct_5_item)
 
         self.SetMenuBar(menu_bar)
 
