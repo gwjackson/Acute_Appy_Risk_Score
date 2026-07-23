@@ -3,11 +3,9 @@
 # from source material listed in code files
 # https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems
 # initial commit - 06/22,2026
-import webbrowser
-
 # now the main backup before refactoring
 
-
+import webbrowser
 import wx
 import re
 from functools import partial
@@ -33,7 +31,13 @@ class MainFrame(wx.Frame):
         bottom_buttons = self._build_button_row(self)
 
         #  Display text fo the About / License / Heop menu items
+        """
+        These display text / HTML files could / should be separate files, but I 
+        want to keep dependencies to a minimum just wxPython and Python hope to 
+        make packaging (when I figure that part out as easy and small as possible) 
+        """
         self.user_license_strg = self._build_license_strg()
+        self.about_strg = self._build_about_strg()
 
 
 
@@ -293,6 +297,11 @@ class MainFrame(wx.Frame):
             title="License Agreement",
         )
 
+    def on_about(self, event):
+        self.show_html_dialog(
+            html_content=self.about_strg,
+            title="About",
+        )
 
     # -----------------------------------------------------------------------------------------------
     ##### Options buttons #####
@@ -562,6 +571,7 @@ class MainFrame(wx.Frame):
         #######################
         # About  menu
         about_item = about_menu.Append(wx.ID_ANY, "About")
+        self.Bind(wx.EVT_MENU, self.on_about, about_item)
 
         license_item = about_menu.Append(wx.ID_ANY, 'License' )
         self.Bind(wx.EVT_MENU, self.on_license, license_item)
@@ -652,6 +662,39 @@ class MainFrame(wx.Frame):
         </html>
             """
         return license_strg
+
+    def _build_about_strg(self):
+        about_strg = """
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Title</title>
+        </head>
+        <body>
+        <h1>Clinical Scoring System fo Adults with Acute Appendicitis</h1><br>
+        
+            <h3><p>Source material American Family Physician<br></h3>
+        <a href="https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems"> AAFP Journal article</a></p>
+        
+        This is a Python script to automate the evaluation of Adult patients with possible Acute Appendicitis.<br>
+        
+        <p>There are multiple scoring systems, two were reviewed in the above citation. The article by Natasha Pyzocha, DO
+            was comparing 2 of several scoring systems; Alvarado and RIPASA.
+        
+        While the RIPASA has improved diagnostic accuracy I have included both in this short application.</p>
+        
+        <p>You may use one or the other or both. A short report is generated and presented for review in a dialog.
+            You may use both scoring system to compare result just for the heck of it, for risk options that occur in both
+            systems both will be automatically selected / deselected when either is clicked on or off.<br><br>
+        The report is also placed / saved to the computer's 'clipboard'.  This allows the user to simply paste
+            (Ctrl+V on windows) into the documentation they are working on. The report is a simple text block
+            and may be further edited by the user once it is pasted into their document.</p>
+        <p>It is imagined that the user would launch the script form within whatever documentation system, EMR, EHR, etc. they are using via a HotKey. On Windows good options are AutoHotKey or an easier to use application FastKey (on MS Windows systems, but similar tools are available on Lynx or Mac's).</p><br>
+        <p><h3>It very much use as is and at your own risk.</h3>See license text</p>
+        </body>
+        </html>
+        """
+        return about_strg
 
     def show_html_dialog(parent, html_content, title="About / Help", size=(700, 500)):
         """Pops up a modal dialog displaying the given HTML string using wx.html2.WebView."""
