@@ -1,4 +1,4 @@
-# Clinical Scoring System fo Adults with Acute Appendicitis
+# Clinical Scoring System for Adults with Acute Appendicitis
 
 ### Source material American Family Physician
 https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems
@@ -39,5 +39,7 @@ It very much use as is and at your own risk.
 
 07/19/26; Have the citations menus added, but the AAFP link to the primary article
 issue just not accessing the website??? 
+
+07/23/2026 got the About text menu working but still having issue opening the AAFP link
 
 comments appreciated (be kind)
