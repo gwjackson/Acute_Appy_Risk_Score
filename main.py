@@ -32,10 +32,9 @@ class MainFrame(wx.Frame):
         fgbs_grid = self._build_fbgs_grid(self.gbf_panel)
         bottom_buttons = self._build_button_row(self)
 
-        #  Create the WebView control
-        self.browser = wx.html2.WebView.New(self)
+        #  Display text fo the About / License / Heop menu items
         self.user_license_strg = self._build_license_strg()
-        #print(self.user_license_strg)
+
 
 
         frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
@@ -288,8 +287,11 @@ class MainFrame(wx.Frame):
 
     def on_license (self, event):
         #print(self.user_license_strg)
-        self.browser.SetPage(self.user_license_strg, "")
-        #pass
+        self.show_html_dialog(
+            #parent=self,
+            html_content=self.user_license_strg,
+            title="License Agreement",
+        )
 
 
     # -----------------------------------------------------------------------------------------------
@@ -645,12 +647,39 @@ class MainFrame(wx.Frame):
         SOFTWARE.</p>
         
         <p>Walker Jackson, MD<br>
-        11/16/2025</p>
+        07/22/2026</p>
         </body>
         </html>
             """
-        #print(license_strg)
         return license_strg
+
+    def show_html_dialog(parent, html_content, title="About / Help", size=(700, 500)):
+        """Pops up a modal dialog displaying the given HTML string using wx.html2.WebView."""
+        dlg = wx.Dialog(
+            parent,
+            title=title,
+            size=size,
+            style=wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER,
+        )
+
+        # 1. Create the browser component
+        browser = wx.html2.WebView.New(dlg)
+
+        # 2. Render the HTML string
+        browser.SetPage(html_content, "")
+
+        # 3. Create a Close / OK button
+        close_btn = wx.Button(dlg, wx.ID_OK, label="Close")
+
+        # 4. Lay out the controls
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(browser, 1, wx.EXPAND | wx.ALL, 10)
+        sizer.Add(close_btn, 0, wx.ALIGN_CENTER | wx.BOTTOM, 10)
+        dlg.SetSizer(sizer)
+
+        # 5. Display modally and clean up when closed
+        dlg.ShowModal()
+        dlg.Destroy()
 
 if __name__ == "__main__":
     app = wx.App()
