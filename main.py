@@ -11,7 +11,7 @@ import webbrowser
 import wx
 import re
 from functools import partial
-import wx.html2 as wv       # webview
+import wx.html2               # webview
 
 
 
@@ -31,6 +31,11 @@ class MainFrame(wx.Frame):
         self._build_menu()
         fgbs_grid = self._build_fbgs_grid(self.gbf_panel)
         bottom_buttons = self._build_button_row(self)
+
+        #  Create the WebView control
+        self.browser = wx.html2.WebView.New(self)
+        self.user_license_strg = self._build_license_strg()
+        #print(self.user_license_strg)
 
 
         frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
@@ -254,6 +259,8 @@ class MainFrame(wx.Frame):
     # -----------------------------------------------------------------------------------------------
     ##### menu selection actions #####
     # sadly most of these require a user key
+    # AAFP but issue accessing the site to get the URL ??
+    # https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems
     # reference 1; https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427
     # reference 2; https://www.americanjournalofsurgery.com/article/S0002-9610(24)00675-5/abstract
     # reference 3; https://www.annemergmed.com/article/S0196-0644(86)80993-3/abstract
@@ -262,7 +269,7 @@ class MainFrame(wx.Frame):
     # -----------------------------------------------------------------------------------------------
 
     def on_primary_reference(self, event):
-        webbrowser.open('https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427')
+        webbrowser.open('https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems')
 
     def on_reference_1(self, event):
         webbrowser.open('https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0275427')
@@ -279,6 +286,10 @@ class MainFrame(wx.Frame):
     def on_reference_5(self, event):
         webbrowser.open('http://www.smj.org.sg/sites/default/files/5103/5103a4.pdf')
 
+    def on_license (self, event):
+        #print(self.user_license_strg)
+        self.browser.SetPage(self.user_license_strg, "")
+        #pass
 
 
     # -----------------------------------------------------------------------------------------------
@@ -546,6 +557,13 @@ class MainFrame(wx.Frame):
         referenct_5_item = citations_menu.Append(wx.ID_ANY, "&Reference 5")
         self.Bind(wx.EVT_MENU, self.on_reference_5, referenct_5_item)
 
+        #######################
+        # About  menu
+        about_item = about_menu.Append(wx.ID_ANY, "About")
+
+        license_item = about_menu.Append(wx.ID_ANY, 'License' )
+        self.Bind(wx.EVT_MENU, self.on_license, license_item)
+
         self.SetMenuBar(menu_bar)
 
     #-----------------------------------------------------------------------------------------------
@@ -590,6 +608,49 @@ class MainFrame(wx.Frame):
 
         return button_row_sizer
 
+    ###########################################
+    # _build_license_strg(self)
+    ###########################################
+    def _build_license_strg(self):
+
+        license_strg = """
+            <head>
+            <meta charset="UTF-8">
+            <title>MIT License</title>
+        </head>
+        <body>
+        
+        <p><font size="+3"<b>MIT License</b></font></p>
+        <br>
+        <br>
+        
+        <p>Copyright (c) 2025 Walker</p>
+        
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+            furnished to do so, subject to the following conditions: </p>
+        
+        <p>The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.</p>
+        
+        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.</p>
+        
+        <p>Walker Jackson, MD<br>
+        11/16/2025</p>
+        </body>
+        </html>
+            """
+        #print(license_strg)
+        return license_strg
 
 if __name__ == "__main__":
     app = wx.App()
