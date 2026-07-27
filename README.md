@@ -30,8 +30,7 @@ figure that out.
 
 It very much use as is and at your own risk. 
 
-06/21/2026; Original creation date 
-
+06/21/2026; Original creation date
 
 06/29/2026; Not fully functional yet - but coming soon 
 
@@ -41,5 +40,9 @@ It very much use as is and at your own risk.
 issue just not accessing the website??? 
 
 07/23/2026 got the About text menu working but still having issue opening the AAFP link
+
+07/27/2026 menus are working and linking to reference doc and references working.
+No packaging yet but still only file is "main.py" and dependencies are still just Python 13.x.x and up and wxPython 4.x.x 
+and up. 
 
 comments appreciated (be kind)
