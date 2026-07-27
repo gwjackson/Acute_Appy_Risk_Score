@@ -39,8 +39,6 @@ class MainFrame(wx.Frame):
         self.user_license_strg = self._build_license_strg()
         self.about_strg = self._build_about_strg()
 
-
-
         frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
         frame_sizer.Add(bottom_buttons, 0, flag=wx.EXPAND | wx.ALL, border=5)
 
@@ -211,7 +209,8 @@ class MainFrame(wx.Frame):
             msgbox = wx.RichMessageDialog(self, self.risk_report, f'{report_name} Risk Report', wx.OK| wx.ICON_INFORMATION)
 
             # Plan to add wx.CallLater to put in an automatic timeout for the messagebox
-            msgbox_timer = wx.CallLater(3000,timeout_close)
+            # not sure on the timeout but 3 - 4 seconds?
+            msgbox_timer = wx.CallLater(4000,timeout_close)
             msgbox_result = msgbox.ShowModal()
 
             # Clean up the timer if the user clicked OK manually before 3 seconds
@@ -710,6 +709,18 @@ class MainFrame(wx.Frame):
 
         # 2. Render the HTML string
         browser.SetPage(html_content, "")
+
+        # inner method handler to VETO the URL click and redirect away from wxPython to use straight Python
+        # allows URL embedded URL links to be handled by Python instead of wxPython
+        def on_navigate(event):
+            url = event.GetURL()
+            if url.startswith("http://") or url.startswith("https://"):
+                event.Veto()
+                webbrowser.open(url)
+
+        # bind browser to the navigation event
+        browser.Bind(wx.html2.EVT_WEBVIEW_NAVIGATING, on_navigate)
+
 
         # 3. Create a Close / OK button
         close_btn = wx.Button(dlg, wx.ID_OK, label="Close")
