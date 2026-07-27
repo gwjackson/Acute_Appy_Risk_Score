@@ -43,6 +43,6 @@ issue just not accessing the website???
 
 07/27/2026 menus are working and linking to reference doc and references working.
 No packaging yet but still only file is "main.py" and dependencies are still just Python 13.x.x and up and wxPython 4.x.x 
-and up. 
+and up.   Pretty much a working example at this time.
 
 comments appreciated (be kind)
