@@ -38,6 +38,7 @@ class MainFrame(wx.Frame):
         """
         self.user_license_strg = self._build_license_strg()
         self.about_strg = self._build_about_strg()
+        self.help_strg = self._build_help_strg()
 
         frame_sizer.Add(fgbs_grid, 0, flag=wx.EXPAND | wx.ALL, border=5)
         frame_sizer.Add(bottom_buttons, 0, flag=wx.EXPAND | wx.ALL, border=5)
@@ -300,6 +301,12 @@ class MainFrame(wx.Frame):
         self.show_html_dialog(
             html_content=self.about_strg,
             title="About",
+        )
+
+    def on_help(self, event):
+        self.show_html_dialog(
+            html_content=self.help_strg,
+
         )
 
     # -----------------------------------------------------------------------------------------------
@@ -577,6 +584,11 @@ class MainFrame(wx.Frame):
 
         self.SetMenuBar(menu_bar)
 
+        #########################
+        # Help menu
+        help_item = help_menu.Append(wx.ID_ANY, '&Help')
+        self.Bind(wx.EVT_MENU, self.on_help, help_item)
+
     #-----------------------------------------------------------------------------------------------
     # bottom button bar
     #-----------------------------------------------------------------------------------------------
@@ -695,6 +707,23 @@ class MainFrame(wx.Frame):
         """
         return about_strg
 
+    def _build_help_strg(self):
+        help_strg = """
+        <html lang="en">
+        <h2> You should really not need help if you got this far<br><br>
+        <h3>
+        See the About - > About menu and the AAFP source article.<br>
+        <a href="https://www.aafp.org/afp/2026/0600/pocg-acute-appendicitis-clinical-scoring-systems"> AAFP Journal article</a></p>
+        
+        <ul>Remember: 
+         <li> Though you are presented with a pop-up message box with the short report text displayed,</li>
+         <li> The report has also been copied to your systems 'Clipboard',</li>
+         <li> placing your text cursor anywhere you can type in your working document and then the 'Paste' 
+         command will copy the report into that working document, at the cursor</li>
+        </ul> 
+        <head>
+        """
+        return help_strg
     def show_html_dialog(parent, html_content, title="About / Help", size=(700, 500)):
         """Pops up a modal dialog displaying the given HTML string using wx.html2.WebView."""
         dlg = wx.Dialog(
