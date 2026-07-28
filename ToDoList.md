@@ -1,6 +1,6 @@
 ## To do list 
 
-[ ] refactor the gridbag to have each object register itself w/the appropriate object list; alv_list / rip_list
+[X] refactor the gridbag to have each object register itself w/the appropriate object list; alv_list / rip_list
 
 [X] build the menu system. 
 

@@ -45,4 +45,7 @@ issue just not accessing the website???
 No packaging yet but still only file is "main.py" and dependencies are still just Python 13.x.x and up and wxPython 4.x.x 
 and up.   Pretty much a working example at this time.  It is basically fully functional at this point.
 
+07/28/2026 OK so completed the grigbag sizer refactoring, functioning now, and so
+ pretty much done unless some errors are pointed out. 
+
 comments appreciated (be kind)
