@@ -12,10 +12,10 @@ comparing 2 of several scoring systems; Alvarado and RIPASA.
 While the RIPASA has improved diagnostic accuracy I have included both in this short application.
 
 You may use one or the other or both.  A short report is generated and presented for review in a dialog.
-you may use both scoring system to compare result just for the H#$^ of it, for risk options that
+ You may use both scoring system to compare result just for the H#$^ of it.  For risk options that
 occur in both systems both will be automatically selected / deselected when either is clicked on or off.
 
-The report is also placed / saved to the computer's 'clipboard' this allows the user to simple paste (Ctrl+V on windows)
+The report is also placed / saved to the computer's 'clipboard' this allows the user to simply paste (Ctrl+V on windows)
 into the documentation they are working on.  The report is a simple text block and may be further
 edited by the user once it is pasted into their document. 
 
@@ -28,7 +28,7 @@ I am doing this both as a useful tool and as a practice module for learning Pyth
 There are only 2 dependencies for this, Python 13.x and wxPython 4.x.  No 'packaging' at this point yet, planning to
 figure that out. 
 
-It very much use as is and at your own risk. 
+It very much use as is and at your own risk (see license).
 
 06/21/2026; Original creation date
 
@@ -43,6 +43,6 @@ issue just not accessing the website???
 
 07/27/2026 menus are working and linking to reference doc and references working.
 No packaging yet but still only file is "main.py" and dependencies are still just Python 13.x.x and up and wxPython 4.x.x 
-and up.   Pretty much a working example at this time.
+and up.   Pretty much a working example at this time.  It is basically fully functional at this point.
 
 comments appreciated (be kind)
