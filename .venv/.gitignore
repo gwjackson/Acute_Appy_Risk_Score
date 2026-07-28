@@ -1,2 +1,3 @@
 creatingapplicationswithwxpython.*
+# Ignore JetBrains IDE settings
 .idea/
